@@ -1,5 +1,6 @@
 package br.com.medprime.controller;
 
+import br.com.medprime.medico.MedicoAtualizarDto;
 import br.com.medprime.medico.MedicoCadastroDto;
 import br.com.medprime.medico.VisualizarMedicoDto;
 import br.com.medprime.service.MedicoService;
@@ -25,6 +26,12 @@ public class MedicoController {
         var medico = this.medicoService.cadastrar(medicoCadastroDto);
         var uri = uriBuilder.path("medico/cadastrar/{id}").buildAndExpand(medico.getId()).toUri();
         return ResponseEntity.created(uri).body(new VisualizarMedicoDto(medico));
+    }
+
+    @RequestMapping(value = "atualizar",method = RequestMethod.PUT)
+    public ResponseEntity<?> atualizar(@RequestBody @Valid MedicoAtualizarDto medicoAtualizarDto){
+        var medico = this.medicoService.atualizar(medicoAtualizarDto);
+        return null;
     }
 
 }
