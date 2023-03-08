@@ -29,9 +29,9 @@ public class MedicoController {
     }
 
     @RequestMapping(value = "atualizar",method = RequestMethod.PUT)
-    public ResponseEntity<?> atualizar(@RequestBody @Valid MedicoAtualizarDto medicoAtualizarDto){
+    public ResponseEntity<VisualizarMedicoDto> atualizar(@RequestBody @Valid MedicoAtualizarDto medicoAtualizarDto){
         var medico = this.medicoService.atualizar(medicoAtualizarDto);
-        return null;
+        return ResponseEntity.ok(new VisualizarMedicoDto(medico));
     }
 
 }
