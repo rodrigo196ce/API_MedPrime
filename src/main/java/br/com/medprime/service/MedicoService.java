@@ -1,13 +1,17 @@
 package br.com.medprime.service;
 
 import br.com.medprime.endereco.Endereco;
-import br.com.medprime.medico.Medico;
-import br.com.medprime.medico.MedicoAtualizarDto;
-import br.com.medprime.medico.MedicoCadastroDto;
+import br.com.medprime.medico.*;
 import br.com.medprime.repository.MedicoRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class MedicoService {
@@ -18,7 +22,7 @@ public class MedicoService {
     public Medico cadastrar(MedicoCadastroDto mcd){
         var endereco = new Endereco(mcd.endereco().logradouro(),mcd.endereco().numero(),mcd.endereco().complemento(),
                 mcd.endereco().bairro(),mcd.endereco().cidade(),mcd.endereco().uf(),mcd.endereco().cep());
-        var medico = new Medico(null,mcd.nome(),mcd.email(),mcd.telefone(),mcd.crm(),mcd.especialidade(),endereco);
+        var medico = new Medico(null,mcd.nome(),mcd.email(),mcd.telefone(),mcd.crm(),mcd.especialidade(),endereco,true);
         return this.medicoRepository.save(medico);
     }
 
@@ -56,6 +60,25 @@ public class MedicoService {
             }
         }
         return medico;
+    }
+
+    public Page<VisualizarMedicoSimpDto> listar(Pageable pageable){
+        return this.medicoRepository.findAllByAtivo(pageable).map(VisualizarMedicoSimpDto::new);
+    }
+
+    public Medico buscarPorId(Long id){
+        Optional<Medico> medico = this.medicoRepository.findByIdAndAtivo(id);
+        if(!medico.isPresent()){
+            throw new EntityNotFoundException();
+        }else{
+            return medico.get();
+        }
+    }
+
+    @Transactional
+    public void desativar(Long id){
+        var medico = this.medicoRepository.getReferenceById(id);
+        medico.setAtivo(false);
     }
 
 }

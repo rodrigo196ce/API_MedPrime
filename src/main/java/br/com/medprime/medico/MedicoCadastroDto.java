@@ -12,7 +12,7 @@ public record MedicoCadastroDto(
         String nome,
         @NotBlank @Email
         String email,
-        @NotBlank @Pattern(regexp = "^\\d{11}$", message = "Número de telefone inválido. Utilize apenas números.")
+        @NotBlank @Pattern(regexp = "^\\d{11}$", message = "Número de telefone inválido.")
         String telefone,
         @NotBlank
         String crm,

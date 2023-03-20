@@ -1,0 +1,1 @@
+alter table medicos add column ativo bit default 1;

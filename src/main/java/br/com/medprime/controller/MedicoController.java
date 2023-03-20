@@ -3,14 +3,16 @@ package br.com.medprime.controller;
 import br.com.medprime.medico.MedicoAtualizarDto;
 import br.com.medprime.medico.MedicoCadastroDto;
 import br.com.medprime.medico.VisualizarMedicoDto;
+import br.com.medprime.medico.VisualizarMedicoSimpDto;
 import br.com.medprime.service.MedicoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -32,6 +34,24 @@ public class MedicoController {
     public ResponseEntity<VisualizarMedicoDto> atualizar(@RequestBody @Valid MedicoAtualizarDto medicoAtualizarDto){
         var medico = this.medicoService.atualizar(medicoAtualizarDto);
         return ResponseEntity.ok(new VisualizarMedicoDto(medico));
+    }
+
+    @RequestMapping(value = "listar", method = RequestMethod.GET)
+    public ResponseEntity<Page<VisualizarMedicoSimpDto>> listar
+            (@PageableDefault(size = 10, page = 0, sort = "nome", direction = Sort.Direction.ASC) Pageable pageable) {
+        return ResponseEntity.ok(this.medicoService.listar(pageable));
+    }
+
+    @RequestMapping(value = "{id}")
+    public ResponseEntity<?> buscarPorId(@PathVariable("id")Long id){
+        var medico = this.medicoService.buscarPorId(id);
+        return ResponseEntity.ok(new VisualizarMedicoSimpDto(medico));
+    }
+
+    @RequestMapping(value = "desativar/{id}")
+    public ResponseEntity<?> desativar(@PathVariable("id")Long id){
+        this.medicoService.desativar(id);
+        return ResponseEntity.ok().build();
     }
 
 }

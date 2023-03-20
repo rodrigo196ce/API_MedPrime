@@ -1,4 +1,4 @@
-package br.com.medprime.medico;
+package br.com.medprime.paciente;
 
 import br.com.medprime.endereco.Endereco;
 import jakarta.persistence.*;
@@ -7,22 +7,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity(name = "Medico")
-@Table(name = "medicos")
+@Entity(name = "Paciente")
+@Table(name = "pacientes")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Medico {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class Paciente {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
     private String email;
     private String telefone;
-    private String crm;
-    @Enumerated(EnumType.STRING)
-    private Especialidade especialidade;
+    private String cpf;
     @Embedded
     private Endereco endereco;
-    private Boolean ativo;
 }

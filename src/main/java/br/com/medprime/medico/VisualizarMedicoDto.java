@@ -1,9 +1,6 @@
 package br.com.medprime.medico;
 
 import br.com.medprime.endereco.Endereco;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 
 public record VisualizarMedicoDto(
         Long id,
