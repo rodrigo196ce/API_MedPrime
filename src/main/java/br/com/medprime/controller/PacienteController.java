@@ -42,6 +42,12 @@ public class PacienteController {
         return ResponseEntity.ok(this.pacienteService.listar(pageable).map(PacienteVisualizarSimpDto::new));
     }
 
+    @RequestMapping(value = "{id}",method = RequestMethod.GET)
+    public ResponseEntity<PacienteVisualizarDto> buscarPorId(@PathVariable("id")Long id){
+        var paciente = this.pacienteService.buscarPorId(id);
+        return ResponseEntity.ok(new PacienteVisualizarDto(paciente));
+    }
+
     @RequestMapping(value = "desativar/{id}",method = RequestMethod.DELETE)
     public ResponseEntity<?> desativar(@PathVariable("id")Long id){
         this.pacienteService.desativar(id);

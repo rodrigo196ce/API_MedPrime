@@ -45,7 +45,7 @@ public class MedicoController {
     @RequestMapping(value = "{id}")
     public ResponseEntity<?> buscarPorId(@PathVariable("id")Long id){
         var medico = this.medicoService.buscarPorId(id);
-        return ResponseEntity.ok(new VisualizarMedicoSimpDto(medico));
+        return ResponseEntity.ok(new VisualizarMedicoDto(medico));
     }
 
     @RequestMapping(value = "desativar/{id}")

@@ -70,9 +70,8 @@ public class MedicoService {
         Optional<Medico> medico = this.medicoRepository.findByIdAndAtivo(id);
         if(!medico.isPresent()){
             throw new EntityNotFoundException();
-        }else{
-            return medico.get();
         }
+        return medico.get();
     }
 
     @Transactional

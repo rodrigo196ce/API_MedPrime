@@ -6,11 +6,14 @@ import br.com.medprime.paciente.Paciente;
 import br.com.medprime.paciente.PacienteAtualizarDto;
 import br.com.medprime.paciente.PacienteCadastrarDto;
 import br.com.medprime.repository.PacienteRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class PacienteService {
@@ -62,7 +65,15 @@ public class PacienteService {
     }
 
     public Page<Paciente> listar(Pageable pageable){
-        return this.pacienteRepository.findByIdAndAtivo(pageable);
+        return this.pacienteRepository.findAllAndAtivo(pageable);
+    }
+
+    public Paciente buscarPorId(Long id){
+        Optional<Paciente> paciente = this.pacienteRepository.findByIdAndAtivo(id);
+        if(!paciente.isPresent()){
+            throw new EntityNotFoundException();
+        }
+        return paciente.get();
     }
 
     @Transactional
