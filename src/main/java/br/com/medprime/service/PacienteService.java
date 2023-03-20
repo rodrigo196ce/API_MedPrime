@@ -21,7 +21,7 @@ public class PacienteService {
     public Paciente cadastrar(PacienteCadastrarDto pcd){
         var endereco = new Endereco(pcd.endereco().logradouro(),pcd.endereco().numero(),pcd.endereco().complemento()
                 ,pcd.endereco().bairro(),pcd.endereco().cidade(),pcd.endereco().uf(),pcd.endereco().cep());
-        var paciente = new Paciente(null,pcd.nome(),pcd.email(),pcd.telefone(),pcd.cpf(),endereco);
+        var paciente = new Paciente(null,pcd.nome(),pcd.email(),pcd.telefone(),pcd.cpf(),endereco,true);
         return this.pacienteRepository.save(paciente);
     }
 
@@ -62,7 +62,12 @@ public class PacienteService {
     }
 
     public Page<Paciente> listar(Pageable pageable){
-        return this.pacienteRepository.findAll(pageable);
+        return this.pacienteRepository.findByIdAndAtivo(pageable);
     }
 
+    @Transactional
+    public void desativar(Long id){
+        var paciente = this.pacienteRepository.getReferenceById(id);
+        paciente.setAtivo(false);
+    }
 }

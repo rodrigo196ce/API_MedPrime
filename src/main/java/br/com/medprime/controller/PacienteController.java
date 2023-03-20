@@ -12,10 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
@@ -43,6 +40,12 @@ public class PacienteController {
     public ResponseEntity<Page<PacienteVisualizarSimpDto>> listar
             (@PageableDefault(page = 0,size = 10,sort = "nome",direction = Sort.Direction.ASC) Pageable pageable) {
         return ResponseEntity.ok(this.pacienteService.listar(pageable).map(PacienteVisualizarSimpDto::new));
+    }
+
+    @RequestMapping(value = "desativar/{id}",method = RequestMethod.DELETE)
+    public ResponseEntity<?> desativar(@PathVariable("id")Long id){
+        this.pacienteService.desativar(id);
+        return ResponseEntity.ok().build();
     }
 
 

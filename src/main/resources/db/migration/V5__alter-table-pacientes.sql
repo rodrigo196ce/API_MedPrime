@@ -1,0 +1,1 @@
+alter table pacientes add column ativo bit default 1;
