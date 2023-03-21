@@ -23,7 +23,7 @@ public class PacienteController {
     private PacienteService pacienteService;
 
     @RequestMapping(value = "cadastrar",method = RequestMethod.POST)
-    public ResponseEntity<?> cadastrar(@RequestBody @Valid PacienteCadastrarDto pacienteCadastrarDto
+    public ResponseEntity<PacienteVisualizarDto> cadastrar(@RequestBody @Valid PacienteCadastrarDto pacienteCadastrarDto
             ,UriComponentsBuilder uriBuilder){
         var paciente = this.pacienteService.cadastrar(pacienteCadastrarDto);
         var uri = uriBuilder.path("paciente/cadastrar/{id}").buildAndExpand(paciente.getId()).toUri();

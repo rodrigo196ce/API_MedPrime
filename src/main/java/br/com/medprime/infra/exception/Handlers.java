@@ -4,6 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -21,9 +22,15 @@ public class Handlers {
     }
 
     @ExceptionHandler(value = EntityNotFoundException.class)
-    public ResponseEntity<?> entityNotFoundException(EntityNotFoundException e, HttpServletRequest request){
+    public ResponseEntity<ExceptionCustomDto> entityNotFoundException(EntityNotFoundException e, HttpServletRequest request){
         return new ResponseEntity<>(new ExceptionCustomDto(LocalDateTime.now(),HttpStatus.NOT_FOUND.value(),
                 "ID não encontrado", request.getRequestURI()),HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = BadCredentialsException.class)
+    public ResponseEntity<?> badCredentialsException(BadCredentialsException e, HttpServletRequest request){
+        return new ResponseEntity<>(new ExceptionCustomDto(LocalDateTime.now(),HttpStatus.FORBIDDEN.value(),
+                "Usuário inexistente ou senha inválida", request.getRequestURI()),HttpStatus.FORBIDDEN);
     }
 
 }
